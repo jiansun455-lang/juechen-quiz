@@ -7,9 +7,9 @@
   <title>测测你是哪种觉尘之人</title>
 
   <!-- 微信/朋友圈分享卡片配置 -->
-  <meta name="description" content="12道题，揭开你的灵魂底色。大梦不觉醒，湮灭红尘中——你是哪种觉尘之人？">
+  <meta name="description" content="19道题，揭开你的灵魂底色。你是哪种觉尘之人？">
   <meta property="og:title" content="测测你是哪种觉尘之人">
-  <meta property="og:description" content="12道题，揭开你的灵魂底色。大梦不觉醒，湮灭红尘中。">
+  <meta property="og:description" content="19道题，揭开你的灵魂底色。你是哪种觉尘之人？">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://juechen-quiz.netlify.app/qrcode.jpg">
   <meta property="og:url" content="https://juechen-quiz.netlify.app">
@@ -781,7 +781,7 @@
       "大梦不觉醒，湮灭红尘中"<br>
       每个人骨子里，都藏着一种酒性
     </div>
-    <div class="tagline">12道题 · 揭开你的灵魂底色</div>
+    <div class="tagline">19道题 · 揭开你的灵魂底色</div>
     <button class="btn-start" onclick="startQuiz()">开始测试</button>
     <div class="splash-count">已有 <strong style="color:var(--gold)">8,462</strong> 人完成测试</div>
   </div>
@@ -963,12 +963,12 @@ const QUESTIONS = [
     ]
   },
   {
-    text: '对于"两位数的价格，四位数的品质"，你怎么看？',
+    text: '你最近有没有认真做成一件事？',
     opts: [
-      { text: '这话我爱听，性价比才是真功夫', type: 'huo' },
-      { text: '要看是不是真的做到了，说到要做到', type: 'jue' },
-      { text: '愿意为真正的好东西多花时间去发现', type: 'yin' },
-      { text: '好酒不一定要贵，能找到宝藏最好', type: 'meng' },
+      { text: '有，我执行力还不错', type: 'xia' },
+      { text: '有，但花的时间比预期久多了', type: 'meng' },
+      { text: '想过要做，还没真正开始', type: 'chen' },
+      { text: '有，但只有自己知道有多难', type: 'jue' },
     ]
   },
   {
@@ -990,12 +990,12 @@ const QUESTIONS = [
     ]
   },
   {
-    text: '"大梦不觉醒，湮灭红尘中"，这句话让你想到什么？',
+    text: '朋友说你"有时候挺难接近的"，你的反应？',
     opts: [
-      { text: '人生就该活得洒脱，别太执着', type: 'chen' },
-      { text: '有点悲，但又很美，能懂那种感觉', type: 'meng' },
-      { text: '就是我的写照，活在当下最重要', type: 'huo' },
-      { text: '每个人都活在自己的梦里，很深刻', type: 'jue' },
+      { text: '有可能，我确实不轻易跟人亲近', type: 'jue' },
+      { text: '不可能吧，我对朋友很热情的', type: 'xia' },
+      { text: '有点在意，但我改不了也不想改', type: 'meng' },
+      { text: '随他们说，每个人都有权利不喜欢我', type: 'chen' },
     ]
   },
   {
@@ -1005,6 +1005,69 @@ const QUESTIONS = [
       { text: '沉静——越喝越清醒，越想越深', type: 'jue' },
       { text: '自在——就是放松，没有目的', type: 'chen' },
       { text: '温柔——微醺时分，最真实的自己', type: 'meng' },
+    ]
+  },
+  {
+    text: '喝多了之后，你更容易出现哪种状态？',
+    opts: [
+      { text: '话变多，说出平时不敢说的', type: 'xia' },
+      { text: '更安静，陷入自己的世界', type: 'jue' },
+      { text: '困，酒一上头就想睡', type: 'huo' },
+      { text: '情绪波动，高兴或难过都加倍', type: 'meng' },
+    ]
+  },
+  {
+    text: '你答应别人的事，说说实话：',
+    opts: [
+      { text: '基本都兑现，我很重视承诺', type: 'xia' },
+      { text: '大事靠谱，小事可能拖或忘', type: 'huo' },
+      { text: '尽力去做，但有时真的做不到', type: 'meng' },
+      { text: '要看值不值得，不是所有承诺都该守', type: 'yin' },
+    ]
+  },
+  {
+    text: '你有没有过明知是错的，还是去做了？',
+    opts: [
+      { text: '有，当时就是控制不住自己', type: 'huo' },
+      { text: '有，但我自己承担了后果', type: 'xia' },
+      { text: '有，我在心里给自己找了理由', type: 'chen' },
+      { text: '偶尔有，但我一般不容易冲动', type: 'yin' },
+    ]
+  },
+  {
+    text: '你对自己最不满意的一面是？',
+    opts: [
+      { text: '有时太冲动，说了不该说的话', type: 'xia' },
+      { text: '太在意别人的看法，活得有点累', type: 'meng' },
+      { text: '拖延，很多事想了很久都没行动', type: 'chen' },
+      { text: '太挑剔，很难真正满意什么', type: 'yin' },
+    ]
+  },
+  {
+    text: '别人夸你，你的第一反应？',
+    opts: [
+      { text: '嘴上谦虚，心里其实挺高兴', type: 'meng' },
+      { text: '直接说谢谢，我知道自己的价值', type: 'jue' },
+      { text: '有点不自在，不太会处理这种时刻', type: 'yin' },
+      { text: '高兴一下，但不会太当回事', type: 'huo' },
+    ]
+  },
+  {
+    text: '一个人独处时，你通常感觉怎么样？',
+    opts: [
+      { text: '很好，难得清静，充个电', type: 'jue' },
+      { text: '还行，但太久了会有点无聊', type: 'huo' },
+      { text: '喜欢，但会莫名有点失落', type: 'meng' },
+      { text: '不太习惯，更喜欢身边有人', type: 'xia' },
+    ]
+  },
+  {
+    text: '如果给现在的自己打分（满分10分），你打几分？',
+    opts: [
+      { text: '8分以上，我对现在挺满意', type: 'xia' },
+      { text: '6到7分，还有很多地方要提升', type: 'meng' },
+      { text: '5分左右，感觉没找到状态', type: 'chen' },
+      { text: '不好打，标准不同分数不同', type: 'jue' },
     ]
   },
   {
