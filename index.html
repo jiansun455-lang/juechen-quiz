@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <title>测测你是哪种觉尘之人</title>
+
+  <!-- 微信/朋友圈分享卡片配置 -->
+  <meta name="description" content="12道题，揭开你的灵魂底色。大梦不觉醒，湮灭红尘中——你是哪种觉尘之人？">
+  <meta property="og:title" content="测测你是哪种觉尘之人">
+  <meta property="og:description" content="12道题，揭开你的灵魂底色。大梦不觉醒，湮灭红尘中。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://juechen-quiz.netlify.app/qrcode.jpg">
+  <meta property="og:url" content="https://juechen-quiz.netlify.app">
+
+  <!-- iOS Safari全屏 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FYK1BPP38"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8FYK1BPP38');
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --gold:   #C8A96E;
+      --gold2:  #E8D5A3;
+      --dark:   #1A1208;
+      --dark2:  #2C1F0E;
+      --ink:    #3D2B0F;
+      --cream:  #F5EDD8;
+      --muted:  #8C7355;
+    }
+
+    body {
+      background: var(--dark);
+      color: var(--cream);
+      font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .screen { display: none; min-height: 100vh; }
+    .screen.active { display: flex; flex-direction: column; }
+
+    /* ── 粒子背景 ── */
+    .bg-texture {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(200,169,110,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(200,169,110,0.05) 0%, transparent 50%),
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 60px,
+          rgba(200,169,110,0.015) 60px,
+          rgba(200,169,110,0.015) 61px
+        );
+    }
+
+    /* ══ 封面 ══ */
+    #splash {
+      align-items: center;
+      justify-content: center;
+      padding: 40px 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .splash-top {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .brand-logo {
+      font-size: 13px;
+      letter-spacing: 4px;
+      color: var(--muted);
+      margin-bottom: 48px;
+      text-transform: uppercase;
+    }
+
+    .splash-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--gold2);
+      line-height: 1.5;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .splash-sub {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    .splash-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 32px 0;
+    }
+    .splash-divider::before,
+    .splash-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+    .splash-divider::after {
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+    .splash-divider span {
+      font-size: 18px;
+      color: var(--gold);
+    }
+
+    .splash-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 2;
+      margin-bottom: 48px;
+      font-style: italic;
+    }
+
+    .tagline {
+      font-size: 13px;
+      color: var(--gold);
+      letter-spacing: 1px;
+      margin-bottom: 48px;
+      opacity: 0.8;
+    }
+
+    .btn-start {
+      background: linear-gradient(135deg, var(--gold) 0%, #A07840 100%);
+      color: var(--dark);
+      border: none;
+      border-radius: 50px;
+      padding: 16px 56px;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      cursor: pointer;
+      box-shadow: 0 4px 24px rgba(200,169,110,0.3);
+      transition: all 0.2s;
+    }
+    .btn-start:active { transform: scale(0.97); opacity: 0.9; }
+
+    .splash-count {
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    /* ══ 答题 ══ */
+    #question {
+      padding: 0 0 40px;
+      position: relative;
+    }
+
+    .q-header {
+      padding: 20px 24px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .q-num {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    .progress-wrap {
+      flex: 1;
+      height: 2px;
+      background: rgba(200,169,110,0.15);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      border-radius: 2px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .q-total { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+
+    .q-body {
+      padding: 32px 24px 24px;
+      flex: 1;
+    }
+
+    .q-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      opacity: 0.7;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .q-text {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.7;
+      color: var(--cream);
+      margin-bottom: 40px;
+      letter-spacing: 1px;
+    }
+
+    .options { display: flex; flex-direction: column; gap: 12px; }
+
+    .opt {
+      background: rgba(200,169,110,0.06);
+      border: 1px solid rgba(200,169,110,0.15);
+      border-radius: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .opt:active { transform: scale(0.98); }
+    .opt.chosen {
+      background: rgba(200,169,110,0.15);
+      border-color: var(--gold);
+    }
+
+    .opt-letter {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(200,169,110,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      color: var(--gold);
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+    .opt.chosen .opt-letter {
+      background: var(--gold);
+      color: var(--dark);
+      border-color: var(--gold);
+    }
+
+    .opt-text { font-size: 15px; color: var(--cream); line-height: 1.5; }
+
+    /* ══ 加载 ══ */
+    #loading {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .loading-ring {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      border: 2px solid rgba(200,169,110,0.15);
+      border-top-color: var(--gold);
+      animation: spin 1s linear infinite;
+      margin: 0 auto 32px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-title {
+      font-size: 18px;
+      color: var(--gold2);
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+    .loading-sub { font-size: 13px; color: var(--muted); line-height: 1.8; }
+
+    /* ══ 结果预览（解锁前）══ */
+    #preview {
+      padding: 0 0 60px;
+      position: relative;
+    }
+
+    .preview-header {
+      padding: 40px 24px 32px;
+      text-align: center;
+      border-bottom: 1px solid rgba(200,169,110,0.1);
+    }
+
+    .preview-tag {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      opacity: 0.7;
+      margin-bottom: 16px;
+    }
+
+    .preview-type {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--gold2);
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+
+    .preview-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    .preview-body {
+      padding: 32px 24px;
+    }
+
+    .preview-desc {
+      font-size: 15px;
+      color: var(--cream);
+      line-height: 1.9;
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+    }
+
+    /* 模糊遮罩 */
+    .blur-wrap {
+      position: relative;
+      margin-bottom: 32px;
+    }
+    .blur-content {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 2;
+      filter: blur(5px);
+      user-select: none;
+      pointer-events: none;
+    }
+    .blur-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 0%, rgba(26,18,8,0.9) 60%, var(--dark) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 8px;
+    }
+    .blur-hint {
+      font-size: 13px;
+      color: var(--gold);
+      letter-spacing: 1px;
+      opacity: 0.8;
+    }
+
+    /* 解锁区 */
+    .unlock-card {
+      margin: 0 24px;
+      background: rgba(200,169,110,0.06);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+    }
+
+    .unlock-title {
+      font-size: 16px;
+      color: var(--gold2);
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .unlock-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .qr-wrap {
+      width: 140px; height: 140px;
+      margin: 0 auto 20px;
+      background: white;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .qr-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    .qr-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: #999;
+      font-size: 12px;
+    }
+    .qr-placeholder .qr-icon { font-size: 48px; }
+
+    .btn-unlocked {
+      background: rgba(200,169,110,0.2);
+      color: var(--muted);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-radius: 50px;
+      padding: 14px 40px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      cursor: not-allowed;
+      width: 100%;
+      transition: all 0.4s;
+      pointer-events: none;
+    }
+    .btn-unlocked.ready {
+      background: linear-gradient(135deg, var(--gold) 0%, #A07840 100%);
+      color: var(--dark);
+      cursor: pointer;
+      pointer-events: auto;
+    }
+    .btn-unlocked.ready:active { opacity: 0.9; transform: scale(0.98); }
+
+    .unlock-tips {
+      margin-top: 16px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ══ 完整结果 ══ */
+    #results {
+      padding: 0 0 80px;
+    }
+
+    .res-hero {
+      padding: 48px 24px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .res-hero::before {
+      content: '';
+      position: absolute;
+      top: -40px; left: 50%;
+      transform: translateX(-50%);
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,169,110,0.15) 0%, transparent 70%);
+    }
+
+    .res-tag {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      opacity: 0.7;
+      margin-bottom: 20px;
+    }
+
+    .res-icon { font-size: 56px; margin-bottom: 16px; }
+
+    .res-type {
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--gold2);
+      letter-spacing: 4px;
+      margin-bottom: 6px;
+    }
+
+    .res-en {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 3px;
+      margin-bottom: 24px;
+    }
+
+    .res-match {
+      display: inline-block;
+      background: rgba(200,169,110,0.12);
+      border: 1px solid rgba(200,169,110,0.25);
+      border-radius: 50px;
+      padding: 6px 20px;
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+
+    .res-section {
+      padding: 0 24px;
+      margin-bottom: 20px;
+    }
+
+    .res-card {
+      background: rgba(200,169,110,0.05);
+      border: 1px solid rgba(200,169,110,0.12);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .res-card-title {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      opacity: 0.8;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .res-card-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(200,169,110,0.15);
+    }
+
+    .res-desc {
+      font-size: 15px;
+      color: var(--cream);
+      line-height: 2;
+      letter-spacing: 0.5px;
+    }
+
+    .traits { display: flex; flex-wrap: wrap; gap: 8px; }
+    .trait-tag {
+      background: rgba(200,169,110,0.1);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-radius: 50px;
+      padding: 5px 14px;
+      font-size: 13px;
+      color: var(--gold2);
+    }
+
+    /* 推荐产品卡 */
+    .product-card {
+      background: linear-gradient(135deg, rgba(200,169,110,0.12) 0%, rgba(160,120,64,0.08) 100%);
+      border: 1px solid rgba(200,169,110,0.25);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .product-card::before {
+      content: '觉尘';
+      position: absolute;
+      right: -10px; top: -10px;
+      font-size: 64px;
+      font-weight: 700;
+      color: rgba(200,169,110,0.06);
+      letter-spacing: -2px;
+    }
+
+    .product-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold2);
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+    .product-spec {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    .product-desc {
+      font-size: 13px;
+      color: var(--cream);
+      line-height: 1.8;
+      margin-bottom: 16px;
+      opacity: 0.85;
+    }
+    .product-price {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .product-price span { font-size: 14px; font-weight: 400; color: var(--muted); }
+
+    .product-slogan {
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--gold);
+      opacity: 0.7;
+      letter-spacing: 2px;
+      font-style: italic;
+    }
+
+    /* 联系区 */
+    .contact-card {
+      background: rgba(200,169,110,0.06);
+      border: 1px solid rgba(200,169,110,0.15);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+    }
+    .contact-title { font-size: 15px; color: var(--gold2); font-weight: 600; margin-bottom: 6px; }
+    .contact-sub { font-size: 12px; color: var(--muted); margin-bottom: 20px; line-height: 1.7; }
+
+    .contact-qr {
+      width: 120px; height: 120px;
+      margin: 0 auto 16px;
+      background: white;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .contact-qr img { width: 100%; height: 100%; object-fit: contain; }
+
+    .contact-name { font-size: 13px; color: var(--cream); letter-spacing: 1px; }
+
+    /* 分享按钮 */
+    .share-row {
+      padding: 0 24px;
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .btn-share {
+      flex: 1;
+      background: rgba(200,169,110,0.1);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-radius: 50px;
+      padding: 13px;
+      font-size: 14px;
+      color: var(--gold2);
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+    }
+    .btn-share:active { background: rgba(200,169,110,0.2); }
+
+    .btn-restart {
+      flex: 1;
+      background: linear-gradient(135deg, var(--gold) 0%, #A07840 100%);
+      border: none;
+      border-radius: 50px;
+      padding: 13px;
+      font-size: 14px;
+      color: var(--dark);
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+    }
+    .btn-restart:active { opacity: 0.9; }
+
+    /* ══ 分享卡片弹层 ══ */
+    .share-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.85);
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .share-modal.open { display: flex; animation: fadeIn .25s ease; }
+    @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+
+    .share-modal-inner {
+      width: 100%;
+      background: var(--dark2);
+      border-radius: 20px 20px 0 0;
+      padding: 24px 24px 32px;
+      text-align: center;
+    }
+
+    .share-modal-title {
+      font-size: 15px;
+      color: var(--gold2);
+      font-weight: 600;
+      margin-bottom: 4px;
+      letter-spacing: 1px;
+    }
+    .share-modal-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* 卡片容器 */
+    .share-card-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    /* 分享卡片本体（用 canvas 绘制，这里是模板） */
+    #shareCardCanvas {
+      border-radius: 16px;
+      max-width: 100%;
+      display: block;
+    }
+
+    .share-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .share-hint::before,
+    .share-hint::after {
+      content: '';
+      width: 32px; height: 1px;
+      background: rgba(200,169,110,0.2);
+    }
+
+    .share-close {
+      background: rgba(200,169,110,0.08);
+      border: 1px solid rgba(200,169,110,0.15);
+      border-radius: 50px;
+      padding: 12px 40px;
+      font-size: 14px;
+      color: var(--muted);
+      cursor: pointer;
+      letter-spacing: 1px;
+      width: 100%;
+    }
+    .share-close:active { opacity: 0.7; }
+
+    /* toast */
+    .toast {
+      position: fixed;
+      bottom: 80px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(44,31,14,0.95);
+      border: 1px solid rgba(200,169,110,0.3);
+      border-radius: 50px;
+      padding: 10px 24px;
+      font-size: 13px;
+      color: var(--gold2);
+      opacity: 0;
+      transition: all 0.3s;
+      white-space: nowrap;
+      z-index: 999;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* fade in */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.5s ease both; }
+  </style>
+</head>
+<body>
+
+<div class="bg-texture"></div>
+<div class="toast" id="toast"></div>
+<img id="qrImgCache" src="qrcode.jpg" style="display:none" crossorigin="anonymous">
+
+<!-- ══ 封面 ══ -->
+<div class="screen active" id="splash">
+  <div class="splash-top"></div>
+  <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; z-index:1;">
+    <div class="brand-logo">觉 尘 · JUE CHEN</div>
+    <div class="splash-title">测测你是哪种<br>觉尘之人</div>
+    <div class="splash-divider"><span>◆</span></div>
+    <div class="splash-desc">
+      "大梦不觉醒，湮灭红尘中"<br>
+      每个人骨子里，都藏着一种酒性
+    </div>
+    <div class="tagline">12道题 · 揭开你的灵魂底色</div>
+    <button class="btn-start" onclick="startQuiz()">开始测试</button>
+    <div class="splash-count">已有 <strong style="color:var(--gold)">8,462</strong> 人完成测试</div>
+  </div>
+</div>
+
+<!-- ══ 答题 ══ -->
+<div class="screen" id="question" style="position:relative; z-index:1;">
+  <div class="q-header">
+    <span class="q-num" id="qNum">01</span>
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <span class="q-total" id="qTotal">/ 12</span>
+  </div>
+  <div class="q-body fade-up" id="qBody">
+    <div class="q-label">QUESTION</div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="options"></div>
+  </div>
+</div>
+
+<!-- ══ 加载 ══ -->
+<div class="screen" id="loading" style="position:relative; z-index:1;">
+  <div class="loading-ring"></div>
+  <div class="loading-title">正在解读你的灵魂底色</div>
+  <div class="loading-sub">从红尘万象中<br>寻找属于你的那瓶酒</div>
+</div>
+
+<!-- ══ 结果预览（未解锁）══ -->
+<div class="screen" id="preview" style="position:relative; z-index:1;">
+  <div class="preview-header fade-up">
+    <div class="preview-tag">你的觉尘人格</div>
+    <div class="preview-type" id="pvType"></div>
+    <div class="preview-subtitle" id="pvSubtitle"></div>
+  </div>
+  <div class="preview-body">
+    <div class="preview-desc fade-up" id="pvDesc"></div>
+    <div class="blur-wrap fade-up">
+      <div class="blur-content" id="pvBlur"></div>
+      <div class="blur-overlay">
+        <div class="blur-hint">▼ 关注视频号 解锁完整报告</div>
+      </div>
+    </div>
+  </div>
+  <div class="unlock-card fade-up">
+    <div class="unlock-title">关注视频号·解锁你的完整命格</div>
+    <div class="unlock-sub">包含：深度性格解读 · 你的专属酒款 · 饮酒建议</div>
+    <div class="qr-wrap">
+      <img src="qrcode.jpg" alt="扫码关注阎良觉尘分店">
+    </div>
+    <button class="btn-unlocked" id="btnUnlock" onclick="unlockResult()">请先扫码关注视频号（<span id="countdown">5</span>s）</button>
+    <div class="unlock-tips">
+      扫码关注「阎良觉尘分店」视频号<br>
+      关注后即可解锁完整人格报告
+    </div>
+  </div>
+</div>
+
+<!-- ══ 完整结果 ══ -->
+<div class="screen" id="results" style="position:relative; z-index:1;">
+  <div class="res-hero fade-up">
+    <div class="res-tag">你的觉尘人格</div>
+    <div class="res-icon" id="resIcon"></div>
+    <div class="res-type" id="resType"></div>
+    <div class="res-en" id="resEn"></div>
+    <div class="res-match" id="resMatch"></div>
+  </div>
+
+  <div class="res-section">
+    <div class="res-card fade-up">
+      <div class="res-card-title">人格解读</div>
+      <div class="res-desc" id="resDesc"></div>
+    </div>
+
+    <div class="res-card fade-up" style="animation-delay:.05s">
+      <div class="res-card-title">你的标签</div>
+      <div class="traits" id="resTraits"></div>
+    </div>
+
+    <div class="res-card fade-up" style="animation-delay:.1s">
+      <div class="res-card-title">饮酒之道</div>
+      <div class="res-desc" id="resDrink"></div>
+    </div>
+
+    <div class="res-card product-card fade-up" style="animation-delay:.15s">
+      <div class="res-card-title">为你推荐</div>
+      <div class="product-name" id="prodName"></div>
+      <div class="product-spec" id="prodSpec"></div>
+      <div class="product-desc" id="prodDesc"></div>
+      <div class="product-price" id="prodPrice"></div>
+      <div class="product-slogan">两位数的价格 · 四位数的品质</div>
+    </div>
+
+    <div class="res-card contact-card fade-up" style="animation-delay:.2s">
+      <div class="contact-title">想尝尝这瓶属于你的酒？</div>
+      <div class="contact-sub">扫码关注，了解更多 · 同城可配送</div>
+      <div class="contact-qr">
+        <img src="qrcode.jpg" alt="扫码关注阎良觉尘分店">
+      </div>
+      <div class="contact-name">觉尘白酒 · 西安阎良</div>
+    </div>
+  </div>
+
+  <div class="share-row">
+    <button class="btn-share" onclick="openShareModal()">生成分享卡片</button>
+    <button class="btn-restart" onclick="restart()">再测一次</button>
+  </div>
+</div>
+
+<!-- ══ 分享卡片弹层 ══ -->
+<div class="share-modal" id="shareModal" onclick="closeShareModal(event)">
+  <div class="share-modal-inner" onclick="event.stopPropagation()">
+    <div class="share-modal-title">你的专属觉尘卡片</div>
+    <div class="share-modal-sub">长按图片保存 · 发给想一起测的朋友</div>
+    <div class="share-card-wrap">
+      <canvas id="shareCardCanvas" width="600" height="900" style="display:none"></canvas>
+      <img id="shareCardImg" style="border-radius:16px;max-width:100%;display:block;" alt="长按保存分享卡片">
+    </div>
+    <div class="share-hint">长按图片保存到相册</div>
+    <button class="share-close" onclick="closeShareModal()">关闭</button>
+  </div>
+</div>
+
+<script>
+/* ══ 题目数据 ══ */
+const QUESTIONS = [
+  {
+    text: '朋友突然约你今晚喝酒，你的第一反应是？',
+    opts: [
+      { text: '马上答应，这种事不用想', type: 'xia' },
+      { text: '先问问喝什么酒，再决定', type: 'yin' },
+      { text: '去，但希望人不要太多', type: 'meng' },
+      { text: '看心情，可能会去', type: 'chen' },
+    ]
+  },
+  {
+    text: '你觉得喝酒最重要的是什么？',
+    opts: [
+      { text: '酒的品质，差酒宁可不喝', type: 'yin' },
+      { text: '在场的人，人对了喝水都开心', type: 'xia' },
+      { text: '当下的心境，一个人也能喝出意境', type: 'jue' },
+      { text: '随意，能喝就好，图个开心', type: 'huo' },
+    ]
+  },
+  {
+    text: '深夜一个人，你更可能在做什么？',
+    opts: [
+      { text: '喝点酒，听听音乐，发发呆', type: 'jue' },
+      { text: '想很多事，脑子停不下来', type: 'meng' },
+      { text: '刷手机，随便看看', type: 'chen' },
+      { text: '早就睡了，不搞这些', type: 'huo' },
+    ]
+  },
+  {
+    text: '别人眼中的你，更接近哪一种？',
+    opts: [
+      { text: '讲义气，靠得住的那种', type: 'xia' },
+      { text: '有自己想法，有时让人看不透', type: 'jue' },
+      { text: '随和，好相处，不爱计较', type: 'chen' },
+      { text: '低调，但懂得享受生活', type: 'yin' },
+    ]
+  },
+  {
+    text: '选一个你最向往的喝酒场景：',
+    opts: [
+      { text: '山顶，一个人，对着落日喝', type: 'jue' },
+      { text: '老朋友聚会，划拳猜令，不醉不归', type: 'xia' },
+      { text: '小馆子，老歌，一个人慢慢喝', type: 'meng' },
+      { text: '自家沙发，好酒一杯，什么都不想', type: 'chen' },
+    ]
+  },
+  {
+    text: '遇到不顺心的事，你通常怎么处理？',
+    opts: [
+      { text: '找朋友喝酒，大家聊聊就好了', type: 'xia' },
+      { text: '一个人待着，想清楚再说', type: 'jue' },
+      { text: '该干嘛干嘛，时间会过去的', type: 'huo' },
+      { text: '做点让自己快乐的事转移注意力', type: 'chen' },
+    ]
+  },
+  {
+    text: '对于"两位数的价格，四位数的品质"，你怎么看？',
+    opts: [
+      { text: '这话我爱听，性价比才是真功夫', type: 'huo' },
+      { text: '要看是不是真的做到了，说到要做到', type: 'jue' },
+      { text: '愿意为真正的好东西多花时间去发现', type: 'yin' },
+      { text: '好酒不一定要贵，能找到宝藏最好', type: 'meng' },
+    ]
+  },
+  {
+    text: '聚会上，你通常扮演什么角色？',
+    opts: [
+      { text: '组织者，张罗一切，让大家都开心', type: 'xia' },
+      { text: '气氛担当，带动节奏，最爱热闹', type: 'huo' },
+      { text: '安静的那个，但你很享受这一切', type: 'yin' },
+      { text: '聊得来就聊，聊不来就喝酒', type: 'chen' },
+    ]
+  },
+  {
+    text: '第一次喝一瓶新酒，你会怎么做？',
+    opts: [
+      { text: '先闻香，再小口慢品，感受层次', type: 'yin' },
+      { text: '先干一杯，感受一下再说', type: 'xia' },
+      { text: '看看酒标，了解一下来历', type: 'jue' },
+      { text: '随意，喝了再说，不想那么多', type: 'chen' },
+    ]
+  },
+  {
+    text: '"大梦不觉醒，湮灭红尘中"，这句话让你想到什么？',
+    opts: [
+      { text: '人生就该活得洒脱，别太执着', type: 'chen' },
+      { text: '有点悲，但又很美，能懂那种感觉', type: 'meng' },
+      { text: '就是我的写照，活在当下最重要', type: 'huo' },
+      { text: '每个人都活在自己的梦里，很深刻', type: 'jue' },
+    ]
+  },
+  {
+    text: '如果用一种状态来形容你喝酒的感觉，你选哪个？',
+    opts: [
+      { text: '热血——喝到酣处，什么都敢说', type: 'xia' },
+      { text: '沉静——越喝越清醒，越想越深', type: 'jue' },
+      { text: '自在——就是放松，没有目的', type: 'chen' },
+      { text: '温柔——微醺时分，最真实的自己', type: 'meng' },
+    ]
+  },
+  {
+    text: '最后一题：此刻你最想做什么？',
+    opts: [
+      { text: '马上找朋友喝一杯', type: 'xia' },
+      { text: '一个人安静喝一杯，想想事情', type: 'jue' },
+      { text: '睡觉，什么都不想', type: 'huo' },
+      { text: '先把结果看了再说', type: 'meng' },
+    ]
+  },
+];
+
+/* ══ 6种人格数据 ══ */
+const TYPES = {
+  jue: {
+    name: '觉者',
+    subtitle: '红尘中的清醒人',
+    en: 'THE AWAKENED',
+    icon: '🪷',
+    match: '灵魂匹配度 94%',
+    desc: '你是那种喝酒能喝出禅意的人。不需要热闹，一杯在手，就能与自己对话。你对事物有独到的判断，不随波逐流，不轻易表态，但说出来往往一针见血。红尘中你来去自如，因为你从未真正迷失过方向。',
+    blurText: '你的内心深处有一种少见的平静。不是冷漠，是历经了什么之后的通透。你喝酒不为逃避，而是为了更清醒地感受这个世界。酒过三巡，别人越来越模糊，你却越来越清晰……',
+    traits: ['洞察力强', '不随波逐流', '内心有秩序', '话少但准', '享受独处'],
+    drink: '你喝酒讲究仪式感，不在乎场合大小，在乎心境对不对。浓香型的层次感最合你心意——入口时的粮香，中段的醇厚，以及最后悠长的回味，每一层都值得细品。不劝酒，不催促，是你最受欢迎的地方。',
+    prod: { name: '觉尘·沉香款', spec: '52度 · 浓香型 · 固态发酵', desc: '窖香幽雅，入口绵柔，尾净香长。适合独饮或与知己对酌，感受每一口的层次变化。', price: '¥168', priceRange: '起' },
+  },
+  xia: {
+    name: '红尘侠',
+    subtitle: '义字当头的江湖人',
+    en: 'THE KNIGHT',
+    icon: '🔥',
+    match: '灵魂匹配度 91%',
+    desc: '义字当头，情字压阵。你是那种为朋友两肋插刀的人，也是饭桌上最先端起酒杯的那个。你活得真实、热烈，不绕弯子，朋友满天下。"大梦不觉醒"？你的梦就是眼前这一桌人，这一杯酒。',
+    blurText: '你的能量场很强，走到哪里气氛就热到哪里。你喝酒不只是喝酒，是在经营感情，在表达立场。每一次干杯，都是你说"我认可你"的方式。这样的人，注定是江湖上被记住的那一个……',
+    traits: ['重情重义', '豪爽直接', '天生领袖', '敢担当', '朋友满天下'],
+    drink: '你喝酒喜欢痛快，不喜欢拖拖拉拉。浓香型的大气感最适合你——劲道足，香味张扬，喝起来有回响。你不care喝了多少，在乎的是今晚这桌人有没有尽兴，有没有喝到心里去。',
+    prod: { name: '觉尘·宴席款', spec: '52度 · 浓香型 · 固态发酵', desc: '酒体醇厚，入口爽净，劲道十足。宴请朋友、走亲访友的首选，拿出来有面子，喝起来不失望。', price: '¥128', priceRange: '起' },
+  },
+  yin: {
+    name: '隐世者',
+    subtitle: '低调中藏着高级',
+    en: 'THE RECLUSE',
+    icon: '🌿',
+    match: '灵魂匹配度 89%',
+    desc: '你懂酒，也懂人，只是不轻易表达。你对品质有自己的坚持，宁可少喝，不喝差的。外表低调，内心丰富。真正了解你的人都知道，你是那种越接触越有意思的人。',
+    blurText: '你有一套别人看不懂的审美标准。你挑酒，也挑人，挑场合。不是矫情，是你清楚地知道什么值得你认真对待。而一旦你认定了，就是真的认定了，不会轻易改变……',
+    traits: ['品味独特', '低调不张扬', '坚持品质', '内心丰富', '越品越有味'],
+    drink: '你喝酒追求品质，觉尘的固态发酵、四川产地对你来说不是噱头，而是你选择它的真正理由。你会在意工艺，在意原料，在意一瓶酒背后有没有人认真做过。这种认真，你感得出来。',
+    prod: { name: '觉尘·珍藏款', spec: '43度 · 浓香型 · 固态发酵', desc: '43度入口更柔，香气内敛而持久。适合懂酒的人细细品味，是送给真正懂行的朋友最好的选择。', price: '¥238', priceRange: '起' },
+  },
+  meng: {
+    name: '梦行者',
+    subtitle: '活在自己故事里的人',
+    en: 'THE DREAMER',
+    icon: '🌙',
+    match: '灵魂匹配度 87%',
+    desc: '你是个有故事的人，或者说，你的故事还没讲完。感性、细腻、有想象力。别人看见红尘，你看见诗。喝酒于你不只是喝酒，是一种仪式，一种与某段时光和解的方式。',
+    blurText: '你的内心比外表丰富得多。你会为一首老歌感动，会在某个深夜突然想起一个人，会在微醺的时候把所有的感受说出来——那才是真实的你。而平时，你只是把这些都藏起来，微笑着……',
+    traits: ['感性细腻', '有故事', '想象力丰富', '念旧', '微醺时最真实'],
+    drink: '你喝酒喜欢有点情绪的时刻。微醺最好，不要大醉。浓香型的温柔感很适合你——不刺激，入口有点甜，像是被什么东西轻轻托住。你喜欢喝酒时有音乐，有灯光，或者有个能聊心里话的人。',
+    prod: { name: '觉尘·微醺款', spec: '43度 · 浓香型 · 固态发酵', desc: '低度绵柔，入口温和，后劲温柔。适合慢饮细品，是陪你度过有点情绪的夜晚的好伴侣。', price: '¥98', priceRange: '起' },
+  },
+  chen: {
+    name: '尘客',
+    subtitle: '随遇而安的自在人',
+    en: 'THE WANDERER',
+    icon: '🍃',
+    match: '灵魂匹配度 85%',
+    desc: '你活得自在，随遇而安。不执着于结果，享受过程本身。朋友眼中你永远不温不火，但关键时刻你总在。你不需要证明什么，这本身就是一种高级。',
+    blurText: '你身上有一种别人学不来的松弛感。不焦虑，不强求，该来的都会来。这不是无所谓，而是一种真正的自信——你知道自己是谁，知道什么对你重要，剩下的都是红尘过客……',
+    traits: ['随遇而安', '松弛自在', '不争不抢', '内心笃定', '越来越好'],
+    drink: '你喝酒没有太多讲究，高兴就好，人对就好。但你有自己隐藏的品味——给你一瓶真正的好酒，你会感受到区别，只是不会特意说出来。觉尘的纯粮酿造，你喝得出那口纯净的感觉。',
+    prod: { name: '觉尘·日常款', spec: '52度 · 浓香型 · 固态发酵', desc: '纯粮酿造，干净利落，喝完不上头。是陪你度过普通日子、让普通日子变得不普通的好酒。', price: '¥68', priceRange: '起' },
+  },
+  huo: {
+    name: '烟火人',
+    subtitle: '最真实的人间底色',
+    en: 'THE EARTHLY',
+    icon: '🌅',
+    match: '灵魂匹配度 88%',
+    desc: '你是最真实的那种人。不装，不端，喜欢就是喜欢，不喜欢就是不喜欢。你的存在让一桌饭变得有意思，你的笑让气氛活起来。大梦不觉醒？你压根不需要觉醒，活在当下就是你最好的状态。',
+    blurText: '你身上有一种朴实的力量。不需要高大上，不需要那么多道理，喝好、吃好、人好就够了。但你比任何人都清楚什么是好东西——因为你就是那个能感受到生活细节里的好的人……',
+    traits: ['真实坦诚', '活在当下', '接地气', '有人情味', '懂生活真谛'],
+    drink: '你喝酒不讲究场合，讲究真实。最怕喝那些包装好看、味道般般的酒。觉尘的"两位数价格四位数品质"简直是为你设计的——你最懂什么叫实在，什么叫值得。',
+    prod: { name: '觉尘·实惠款', spec: '52度 · 浓香型 · 固态发酵', desc: '纯粮固态发酵，价格实在，品质不打折。是最适合日常自饮、朋友小聚的诚意之作。', price: '¥38', priceRange: '起' },
+  },
+};
+
+/* ══ 状态 ══ */
+let current = 0;
+let scores = { jue:0, xia:0, yin:0, meng:0, chen:0, huo:0 };
+let answers = [];
+let resultKey = '';
+let aiDesc = '';
+
+/* ══ 工具 ══ */
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+/* ══ 流程 ══ */
+function startQuiz() {
+  gtag('event', '开始测试');
+  current = 0;
+  scores = { jue:0, xia:0, yin:0, meng:0, chen:0, huo:0 };
+  answers = [];
+  aiDesc = '';
+  renderQuestion();
+  show('question');
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[current];
+  const n = current + 1;
+
+  document.getElementById('qNum').textContent = String(n).padStart(2, '0');
+  document.getElementById('progressBar').style.width = ((n - 1) / QUESTIONS.length * 100) + '%';
+  document.getElementById('qText').textContent = q.text;
+
+  const body = document.getElementById('qBody');
+  body.classList.remove('fade-up');
+  void body.offsetWidth;
+  body.classList.add('fade-up');
+
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('options').innerHTML = q.opts.map((o, i) => `
+    <div class="opt" onclick="choose('${o.type}', this)">
+      <div class="opt-letter">${letters[i]}</div>
+      <div class="opt-text">${o.text}</div>
+    </div>
+  `).join('');
+}
+
+function choose(type, el) {
+  document.querySelectorAll('.opt').forEach(o => o.style.pointerEvents = 'none');
+  el.classList.add('chosen');
+  scores[type]++;
+  answers.push({ type, idx: Array.from(el.parentNode.children).indexOf(el) });
+
+  setTimeout(() => {
+    current++;
+    if (current >= QUESTIONS.length) {
+      finishQuiz();
+    } else {
+      renderQuestion();
+      document.querySelectorAll('.opt').forEach(o => o.style.pointerEvents = '');
+    }
+  }, 350);
+}
+
+async function finishQuiz() {
+  show('loading');
+  resultKey = Object.entries(scores).sort((a,b) => b[1]-a[1])[0][0];
+  const t = TYPES[resultKey];
+
+  // 整理答题内容发给AI
+  const answerText = answers.map((a, i) => {
+    const q = QUESTIONS[i];
+    const opt = q.opts.find(o => o.type === a.type) || q.opts[a.idx];
+    return `Q${i+1}：${q.text}\n答：${opt ? opt.text : ''}`;
+  }).join('\n');
+
+  try {
+    const res = await fetch('/.netlify/functions/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        answers: answerText,
+        typeName: t.name,
+        typeSubtitle: t.subtitle,
+      }),
+    });
+    const data = await res.json();
+    if (data.result) aiDesc = data.result;
+  } catch(e) {
+    aiDesc = '';
+  }
+
+  showPreview();
+}
+
+function showPreview() {
+  const t = TYPES[resultKey];
+  document.getElementById('pvType').textContent = t.name;
+  document.getElementById('pvSubtitle').textContent = t.subtitle;
+  document.getElementById('pvDesc').textContent = t.desc;
+  document.getElementById('pvBlur').textContent = t.blurText;
+  show('preview');
+  startCountdown();
+  gtag('event', '完成答题', { personality: t.name });
+}
+
+function startCountdown() {
+  const btn = document.getElementById('btnUnlock');
+  const cd = document.getElementById('countdown');
+  btn.classList.remove('ready');
+  let sec = 5;
+  cd.textContent = sec;
+  const timer = setInterval(() => {
+    sec--;
+    if (sec <= 0) {
+      clearInterval(timer);
+      btn.classList.add('ready');
+      btn.innerHTML = '我已关注，查看完整报告 ✓';
+    } else {
+      cd.textContent = sec;
+    }
+  }, 1000);
+}
+
+function unlockResult() {
+  gtag('event', '解锁结果');
+  const t = TYPES[resultKey];
+
+  document.getElementById('resIcon').textContent = t.icon;
+  document.getElementById('resType').textContent = t.name;
+  document.getElementById('resEn').textContent = t.en;
+  document.getElementById('resMatch').textContent = t.match;
+  document.getElementById('resDesc').textContent = aiDesc || t.desc;
+  document.getElementById('resDrink').textContent = t.drink;
+
+  document.getElementById('resTraits').innerHTML =
+    t.traits.map(tr => `<div class="trait-tag">${tr}</div>`).join('');
+
+  document.getElementById('prodName').textContent = t.prod.name;
+  document.getElementById('prodSpec').textContent = t.prod.spec;
+  document.getElementById('prodDesc').textContent = t.prod.desc;
+  document.getElementById('prodPrice').innerHTML =
+    t.prod.price + `<span> ${t.prod.priceRange}</span>`;
+
+  show('results');
+}
+
+/* ══ 分享卡片 ══ */
+const TYPE_COLORS = {
+  jue:  { bg1: '#1A1208', bg2: '#2C1F0E', accent: '#C8A96E' },
+  xia:  { bg1: '#1A0C08', bg2: '#2C1410', accent: '#E8735A' },
+  yin:  { bg1: '#0A1A10', bg2: '#102814', accent: '#5DBE8A' },
+  meng: { bg1: '#0E0A1A', bg2: '#16102C', accent: '#9B8AE8' },
+  chen: { bg1: '#0A1218', bg2: '#102028', accent: '#5AAED8' },
+  huo:  { bg1: '#1A1008', bg2: '#2C1C08', accent: '#E8A840' },
+};
+
+function drawShareCard() {
+  const t = TYPES[resultKey];
+  const c = TYPE_COLORS[resultKey];
+  const canvas = document.getElementById('shareCardCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = 600, H = 900;
+
+  // 背景渐变
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, c.bg1);
+  grad.addColorStop(1, c.bg2);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // 装饰圆光
+  const glow = ctx.createRadialGradient(W/2, H*0.35, 0, W/2, H*0.35, 280);
+  glow.addColorStop(0, hexAlpha(c.accent, 0.12));
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, W, H);
+
+  // 顶部金线
+  ctx.fillStyle = c.accent;
+  ctx.fillRect(60, 0, W - 120, 3);
+
+  // 品牌名
+  ctx.fillStyle = hexAlpha(c.accent, 0.6);
+  ctx.font = '500 22px PingFang SC, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.letterSpacing = '8px';
+  ctx.fillText('觉  尘  白  酒', W/2, 70);
+
+  // 分隔线
+  drawDivider(ctx, W/2, 95, 80, c.accent);
+
+  // 大图标
+  ctx.font = '88px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(t.icon, W/2, 230);
+
+  // 人格名
+  ctx.fillStyle = '#F5EDD8';
+  ctx.font = 'bold 64px PingFang SC, sans-serif';
+  ctx.letterSpacing = '10px';
+  ctx.fillText(t.name, W/2, 318);
+
+  // 英文名
+  ctx.fillStyle = hexAlpha(c.accent, 0.6);
+  ctx.font = '500 18px Arial, sans-serif';
+  ctx.letterSpacing = '5px';
+  ctx.fillText(t.en, W/2, 360);
+
+  // 副标题
+  ctx.fillStyle = hexAlpha('#F5EDD8', 0.7);
+  ctx.font = '400 24px PingFang SC, sans-serif';
+  ctx.letterSpacing = '3px';
+  ctx.fillText(t.subtitle, W/2, 410);
+
+  // 分隔线
+  drawDivider(ctx, W/2, 440, 60, c.accent);
+
+  // 描述文字（自动换行）
+  ctx.fillStyle = hexAlpha('#F5EDD8', 0.82);
+  ctx.font = '400 23px PingFang SC, sans-serif';
+  ctx.letterSpacing = '1px';
+  wrapText(ctx, t.desc, W/2, 490, W - 120, 40, 'center');
+
+  // 底部卡片区
+  roundRect(ctx, 60, 700, W - 120, 140, 16, hexAlpha(c.accent, 0.08), hexAlpha(c.accent, 0.2));
+
+  // 二维码图片
+  const qrImg = document.getElementById('qrImgCache');
+  roundRect(ctx, 84, 716, 100, 100, 8, 'white', 'white');
+  ctx.drawImage(qrImg, 86, 718, 96, 96);
+
+  // 扫码文字
+  ctx.fillStyle = '#F5EDD8';
+  ctx.font = 'bold 22px PingFang SC, sans-serif';
+  ctx.textAlign = 'left';
+  ctx.letterSpacing = '1px';
+  ctx.fillText('你是哪种觉尘之人？', 200, 748);
+  ctx.fillStyle = hexAlpha(c.accent, 0.85);
+  ctx.font = '400 19px PingFang SC, sans-serif';
+  ctx.letterSpacing = '1px';
+  ctx.fillText('扫码测你的灵魂底色', 200, 782);
+  ctx.fillStyle = hexAlpha('#F5EDD8', 0.4);
+  ctx.font = '400 16px PingFang SC, sans-serif';
+  ctx.fillText('大梦不觉醒 · 湮灭红尘中', 200, 816);
+
+  // 底部金线
+  ctx.fillStyle = c.accent;
+  ctx.fillRect(60, H - 3, W - 120, 3);
+}
+
+function hexAlpha(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function drawDivider(ctx, cx, y, halfW, color) {
+  ctx.strokeStyle = hexAlpha(color, 0.4);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(cx - halfW - 20, y);
+  ctx.lineTo(cx - 10, y);
+  ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.font = '14px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('◆', cx, y + 5);
+  ctx.beginPath();
+  ctx.moveTo(cx + 10, y);
+  ctx.lineTo(cx + halfW + 20, y);
+  ctx.stroke();
+}
+
+function roundRect(ctx, x, y, w, h, r, fill, stroke) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+  if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1; ctx.stroke(); }
+}
+
+function wrapText(ctx, text, cx, y, maxW, lineH, align) {
+  ctx.textAlign = align || 'left';
+  const chars = text.split('');
+  let line = '';
+  let lines = [];
+  for (let ch of chars) {
+    const test = line + ch;
+    if (ctx.measureText(test).width > maxW && line) {
+      lines.push(line);
+      line = ch;
+    } else {
+      line = test;
+    }
+  }
+  if (line) lines.push(line);
+  const totalH = lines.length * lineH;
+  let startY = y;
+  lines.forEach(l => {
+    ctx.fillText(l, cx, startY);
+    startY += lineH;
+  });
+  return startY;
+}
+
+function openShareModal() {
+  gtag('event', '生成分享卡片');
+  const modal = document.getElementById('shareModal');
+  modal.classList.add('open');
+
+  const canvas = document.getElementById('shareCardCanvas');
+  const img = document.getElementById('shareCardImg');
+  const maxW = Math.min(window.innerWidth - 48, 360);
+  img.style.width = maxW + 'px';
+
+  // 等二维码图片加载完再画
+  const qrImg = document.getElementById('qrImgCache');
+  const doRender = () => {
+    drawShareCard();
+    // 转成 <img> 让微信可以长按保存
+    img.src = canvas.toDataURL('image/png');
+  };
+  if (qrImg.complete) {
+    doRender();
+  } else {
+    qrImg.onload = doRender;
+  }
+}
+
+function closeShareModal(e) {
+  if (!e || e.target === document.getElementById('shareModal')) {
+    document.getElementById('shareModal').classList.remove('open');
+  }
+}
+
+function restart() {
+  startQuiz();
+}
+</script>
+</body>
+</html>
