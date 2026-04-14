@@ -457,9 +457,10 @@
       position: absolute;
       top: -40px; left: 50%;
       transform: translateX(-50%);
-      width: 200px; height: 200px;
+      width: 260px; height: 260px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(200,169,110,0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, var(--type-glow, rgba(200,169,110,0.15)) 0%, transparent 70%);
+      transition: background 0.6s ease;
     }
 
     .res-tag {
@@ -762,6 +763,28 @@
       to   { opacity: 1; transform: translateY(0); }
     }
     .fade-up { animation: fadeUp 0.5s ease both; }
+
+    /* emoji 浮动 */
+    @keyframes floatEmoji {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%       { transform: translateY(-8px) scale(1.06); }
+    }
+    .res-icon { animation: floatEmoji 3.2s ease-in-out infinite; }
+
+    /* AI专属角标 */
+    .ai-badge {
+      display: inline-block;
+      font-size: 10px;
+      background: rgba(200,169,110,0.15);
+      border: 1px solid rgba(200,169,110,0.3);
+      border-radius: 50px;
+      padding: 2px 9px;
+      letter-spacing: 0;
+      vertical-align: middle;
+      color: var(--gold);
+      margin-left: 6px;
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
@@ -852,21 +875,21 @@
 
   <div class="res-section">
     <div class="res-card fade-up">
-      <div class="res-card-title">人格解读</div>
+      <div class="res-card-title" id="resDescTitle">人格解读</div>
       <div class="res-desc" id="resDesc"></div>
     </div>
 
-    <div class="res-card fade-up" style="animation-delay:.05s">
+    <div class="res-card fade-up" style="animation-delay:.12s">
       <div class="res-card-title">你的标签</div>
       <div class="traits" id="resTraits"></div>
     </div>
 
-    <div class="res-card fade-up" style="animation-delay:.1s">
+    <div class="res-card fade-up" style="animation-delay:.24s">
       <div class="res-card-title">饮酒之道</div>
       <div class="res-desc" id="resDrink"></div>
     </div>
 
-    <div class="res-card product-card fade-up" style="animation-delay:.15s">
+    <div class="res-card product-card fade-up" style="animation-delay:.36s">
       <div class="res-card-title">为你推荐</div>
       <div class="product-name" id="prodName"></div>
       <div class="product-spec" id="prodSpec"></div>
@@ -875,7 +898,7 @@
       <div class="product-slogan">两位数的价格 · 四位数的品质</div>
     </div>
 
-    <div class="res-card contact-card fade-up" style="animation-delay:.2s">
+    <div class="res-card contact-card fade-up" style="animation-delay:.48s">
       <div class="contact-title">想尝尝这瓶属于你的酒？</div>
       <div class="contact-sub">扫码关注，了解更多 · 同城可配送</div>
       <div class="contact-qr">
@@ -1195,6 +1218,7 @@ function renderQuestion() {
 
   document.getElementById('qNum').textContent = String(n).padStart(2, '0');
   document.getElementById('progressBar').style.width = ((n - 1) / QUESTIONS.length * 100) + '%';
+  document.getElementById('qTotal').textContent = '/ ' + QUESTIONS.length;
   document.getElementById('qText').textContent = q.text;
 
   const body = document.getElementById('qBody');
@@ -1309,6 +1333,16 @@ function unlockResult() {
     t.prod.price + `<span> ${t.prod.priceRange}</span>`;
 
   show('results');
+
+  // 英雄区人格主题色光晕
+  const c = TYPE_COLORS[resultKey];
+  document.getElementById('results').style.setProperty('--type-glow', hexAlpha(c.accent, 0.2));
+
+  // AI解读有内容时加角标
+  if (aiDesc) {
+    document.getElementById('resDescTitle').innerHTML =
+      '人格解读<span class="ai-badge">✦ AI专属</span>';
+  }
 }
 
 /* ══ 分享卡片 ══ */
@@ -1382,11 +1416,14 @@ function drawShareCard() {
   // 分隔线
   drawDivider(ctx, W/2, 440, 60, c.accent);
 
-  // 描述文字（自动换行）
+  // 描述文字（优先用AI解读，截取前115字）
+  const cardDesc = aiDesc
+    ? (aiDesc.length > 115 ? aiDesc.slice(0, 115) + '……' : aiDesc)
+    : t.desc;
   ctx.fillStyle = hexAlpha('#F5EDD8', 0.82);
   ctx.font = '400 23px PingFang SC, sans-serif';
   ctx.letterSpacing = '1px';
-  wrapText(ctx, t.desc, W/2, 490, W - 120, 40, 'center');
+  wrapText(ctx, cardDesc, W/2, 490, W - 120, 40, 'center');
 
   // 底部卡片区
   roundRect(ctx, 60, 700, W - 120, 140, 16, hexAlpha(c.accent, 0.08), hexAlpha(c.accent, 0.2));
