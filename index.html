@@ -18,6 +18,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+  <!-- QR Code 生成库 -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8FYK1BPP38"></script>
   <script>
@@ -792,6 +795,7 @@
 <div class="bg-texture"></div>
 <div class="toast" id="toast"></div>
 <img id="qrImgCache" src="qrcode.jpg" style="display:none" crossorigin="anonymous">
+<img id="quizQrCache" style="display:none">
 
 <!-- ══ 封面 ══ -->
 <div class="screen active" id="splash">
@@ -929,6 +933,20 @@
 </div>
 
 <script>
+/* ══ 测试链接二维码（页面加载时预生成） ══ */
+const QUIZ_URL = 'https://chimerical-queijadas-b9f7c0.netlify.app';
+window.addEventListener('load', function() {
+  QRCode.toDataURL(QUIZ_URL, {
+    width: 200,
+    margin: 1,
+    color: { dark: '#1A1208', light: '#FFFFFF' }
+  }, function(err, dataUrl) {
+    if (err || !dataUrl) return;
+    const img = document.getElementById('quizQrCache');
+    img.src = dataUrl;
+  });
+});
+
 /* ══ 题目数据 ══ */
 const QUESTIONS = [
   {
@@ -1428,10 +1446,12 @@ function drawShareCard() {
   // 底部卡片区
   roundRect(ctx, 60, 700, W - 120, 140, 16, hexAlpha(c.accent, 0.08), hexAlpha(c.accent, 0.2));
 
-  // 二维码图片
-  const qrImg = document.getElementById('qrImgCache');
+  // 测试链接二维码
+  const qrImg = document.getElementById('quizQrCache');
   roundRect(ctx, 84, 716, 100, 100, 8, 'white', 'white');
-  ctx.drawImage(qrImg, 86, 718, 96, 96);
+  if (qrImg.complete && qrImg.naturalWidth > 0) {
+    ctx.drawImage(qrImg, 86, 718, 96, 96);
+  }
 
   // 扫码文字
   ctx.fillStyle = '#F5EDD8';
@@ -1526,17 +1546,17 @@ function openShareModal() {
   const maxW = Math.min(window.innerWidth - 48, 360);
   img.style.width = maxW + 'px';
 
-  // 等二维码图片加载完再画
-  const qrImg = document.getElementById('qrImgCache');
+  // 等测试链接二维码加载完再画
+  const quizQr = document.getElementById('quizQrCache');
   const doRender = () => {
     drawShareCard();
     // 转成 <img> 让微信可以长按保存
     img.src = canvas.toDataURL('image/png');
   };
-  if (qrImg.complete) {
+  if (quizQr.complete && quizQr.naturalWidth > 0) {
     doRender();
   } else {
-    qrImg.onload = doRender;
+    quizQr.onload = doRender;
   }
 }
 
